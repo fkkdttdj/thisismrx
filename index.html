@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SERHATIN SIBER PORTALI</title>
     <style>
-        body { background: black; color: #00ff00; font-family: 'Courier New', monospace; overflow: hidden; margin: 0; }
+        body { background: black; color: #00ff00; font-family: 'Courier New', monospace; overflow-x: hidden; margin: 0; }
         canvas { position: fixed; top: 0; left: 0; z-index: -1; }
-        .container { position: relative; z-index: 1; text-align: center; padding-top: 50px; }
+        .container { position: relative; z-index: 1; text-align: center; padding: 20px; }
         h1 {
-            font-size: 3rem; font-weight: bold; text-transform: uppercase;
+            font-size: 2.5rem; font-weight: bold; text-transform: uppercase;
             text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-            animation: glitch 1s infinite; letter-spacing: 5px;
+            animation: glitch 1s infinite; letter-spacing: 3px;
         }
         @keyframes glitch {
             0% { transform: skew(0deg); text-shadow: 2px 2px #ff0000; }
@@ -20,27 +20,38 @@
             100% { transform: skew(0deg); }
         }
         .box { 
-            border: 3px solid #00ff00; background: rgba(0, 0, 0, 0.85); 
-            padding: 30px; margin: 20px auto; width: 85%; max-width: 550px; 
-            box-shadow: 0 0 40px #00ff00; border-radius: 20px;
+            border: 2px solid #00ff00; background: rgba(0, 0, 0, 0.9); 
+            padding: 25px; margin: 20px auto; width: 90%; max-width: 500px; 
+            box-shadow: 0 0 30px #00ff00; border-radius: 15px;
         }
         input { 
             background: #000; color: #00ff00; border: 1px solid #00ff00; 
-            padding: 15px; width: 90%; margin-bottom: 15px; font-size: 16px; outline: none;
+            padding: 12px; width: 90%; margin-bottom: 10px; font-size: 16px; outline: none;
         }
         button { 
-            background: #00ff00; color: black; padding: 15px; 
+            background: #00ff00; color: black; padding: 12px; 
             border: none; cursor: pointer; font-weight: bold; 
-            width: 100%; font-size: 18px; transition: 0.3s;
+            width: 100%; font-size: 16px; transition: 0.3s; margin-top: 5px;
         }
         button:hover { background: #fff; box-shadow: 0 0 20px #fff; }
-        #sonucAlani { margin-top: 25px; border-top: 2px solid #00ff00; padding-top: 15px; display: none; }
+        
+        /* YENİ TUŞ TASARIMI */
+        .discovery-btn {
+            background: transparent; color: #ff0000; border: 2px solid #ff0000;
+            margin-top: 30px; width: auto; display: inline-block; padding: 10px 20px;
+            text-decoration: none; font-size: 14px; transition: 0.5s;
+            box-shadow: 0 0 10px #ff0000;
+        }
+        .discovery-btn:hover { background: #ff0000; color: white; box-shadow: 0 0 30px #ff0000; }
+        
+        #sonucAlani { margin-top: 20px; border-top: 1px dashed #00ff00; padding-top: 15px; display: none; }
     </style>
 </head>
 <body>
     <canvas id="matrix"></canvas>
     <div class="container">
         <h1>[ SERHATIN SIBER PORTALI ]</h1>
+        
         <div class="box">
             <input type="text" id="mesaj" placeholder="Mesajı yaz reisim..." required>
             <input type="number" id="anahtar" placeholder="Şifre Anahtarı (Örn: 5)..." required>
@@ -48,14 +59,15 @@
             
             <div id="sonucAlani">
                 <h3 style="color: #fff;">OPERASYON BAŞARILI:</h3>
-                <p id="sonucMetni" style="font-size: 24px; color: #00ff00; font-weight: bold;"></p>
-                <p style="font-size: 12px; color: #888;">(Çözmek için anahtarı eksi (-) olarak gir)</p>
+                <p id="sonucMetni" style="font-size: 22px; color: #00ff00; font-weight: bold; word-wrap: break-word;"></p>
             </div>
         </div>
+
+        <a href="kesif.html" class="discovery-btn">>> GİZLİ SİBER KAYNAKLARA ERİŞ <<</a>
     </div>
 
     <script>
-        // MATRIX EFEKTİ
+        // MATRIX EFEKTİ (Hızlı Versiyon)
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -65,7 +77,7 @@
         const drops = Array(Math.floor(columns)).fill(1);
 
         function draw() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#0F0";
             ctx.font = fontSize + "px monospace";
@@ -78,23 +90,19 @@
         }
         setInterval(draw, 33);
 
-        // ŞİFRELEME MANTIĞI (JavaScript Versiyonu)
         function sifrele() {
             const metin = document.getElementById('mesaj').value;
             const anahtar = parseInt(document.getElementById('anahtar').value);
+            if(isNaN(anahtar)) { alert("Anahtar gir reisim!"); return; }
             let sonuc = "";
-
             for (let i = 0; i < metin.length; i++) {
                 let c = metin[i];
                 if (c.match(/[a-z]/i)) {
                     let code = metin.charCodeAt(i);
                     let start = (code >= 65 && code <= 90) ? 65 : 97;
                     sonuc += String.fromCharCode(((code - start + anahtar) % 26 + 26) % 26 + start);
-                } else {
-                    sonuc += c;
-                }
+                } else { sonuc += c; }
             }
-            
             document.getElementById('sonucMetni').innerText = sonuc;
             document.getElementById('sonucAlani').style.display = "block";
         }
