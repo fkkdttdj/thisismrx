@@ -3,92 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ŞİFRELİ CHAT PORTALI</title>
+    <title>GİZLİ KARARGAH</title>
     <style>
-        body { background: black; color: #00ff00; font-family: 'Courier New', monospace; overflow-x: hidden; margin: 0; }
+        body { background: black; color: #0f0; font-family: 'Courier New', monospace; margin: 0; overflow: hidden; }
         canvas { position: fixed; top: 0; left: 0; z-index: -1; }
         .container { position: relative; z-index: 1; text-align: center; padding: 20px; }
-        h1 {
-            font-size: 2.5rem; font-weight: bold; text-transform: uppercase;
-            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-            animation: glitch 1s infinite; letter-spacing: 3px;
-        }
-        @keyframes glitch {
-            0% { transform: skew(0deg); text-shadow: 2px 2px #ff0000; }
-            20% { transform: skew(-3deg); text-shadow: -2px -2px #0000ff; }
-            40% { transform: skew(1deg); text-shadow: 2px -2px #00ff00; }
-            100% { transform: skew(0deg); }
-        }
-        .box { 
-            border: 2px solid #00ff00; background: rgba(0, 0, 0, 0.9); 
-            padding: 25px; margin: 20px auto; width: 90%; max-width: 500px; 
-            box-shadow: 0 0 30px #00ff00; border-radius: 15px;
-        }
-        input { 
-            background: #000; color: #00ff00; border: 1px solid #00ff00; 
-            padding: 12px; width: 90%; margin-bottom: 10px; font-size: 16px; outline: none;
-        }
-        button { 
-            background: #00ff00; color: black; padding: 12px; 
-            border: none; cursor: pointer; font-weight: bold; 
-            width: 100%; font-size: 16px; transition: 0.3s; margin-top: 5px;
-        }
-        button:hover { background: #fff; box-shadow: 0 0 20px #fff; }
+        .box { border: 2px solid #0f0; background: rgba(0,0,0,0.85); padding: 20px; display: inline-block; border-radius: 15px; box-shadow: 0 0 20px #0f0; margin-top: 50px; }
+        input { background: #000; color: #0f0; border: 1px solid #0f0; padding: 10px; width: 90%; margin-bottom: 10px; outline: none; }
+        button { background: #0f0; color: #000; border: none; padding: 12px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; }
+        button:hover { background: #fff; box-shadow: 0 0 15px #fff; }
         
-        /* YENİ TUŞ TASARIMI */
-        .discovery-btn {
-            background: transparent; color: #ff0000; border: 2px solid #ff0000;
-            margin-top: 30px; width: auto; display: inline-block; padding: 10px 20px;
-            text-decoration: none; font-size: 14px; transition: 0.5s;
-            box-shadow: 0 0 10px #ff0000;
-        }
-        .discovery-btn:hover { background: #ff0000; color: white; box-shadow: 0 0 30px #ff0000; }
-        
-        #sonucAlani { margin-top: 20px; border-top: 1px dashed #00ff00; padding-top: 15px; display: none; }
+        /* CANLI LİSTE PANELİ */
+        #intel-panel { position: fixed; top: 20px; left: 20px; background: rgba(0,20,0,0.9); border: 2px solid #0f0; padding: 10px; font-size: 11px; z-index: 100; border-radius: 5px; box-shadow: 0 0 10px #0f0; max-width: 250px; }
+        .target-item { border-bottom: 1px solid rgba(0,255,0,0.3); padding: 5px 0; }
+        .blink { animation: blinker 1s linear infinite; color: red; }
+        @keyframes blinker { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
-    <canvas id="matrix"></canvas>
-    <div class="container">
-        <h1>[ ŞİFRELİ CHAT PORTALI ]</h1>
-        
-        <div class="box">
-            <input type="text" id="mesaj" placeholder="Mesajı yaz reisim..." required>
-            <input type="number" id="anahtar" placeholder="Şifre Anahtarı (Örn: 5)..." required>
-            <button onclick="sifrele()">SİSTEME GÖNDER VE ŞİFRELE</button>
-            
-            <div id="sonucAlani">
-                <h3 style="color: #fff;">OPERASYON BAŞARILI:</h3>
-                <p id="sonucMetni" style="font-size: 22px; color: #00ff00; font-weight: bold; word-wrap: break-word;"></p>
-            </div>
-        </div>
 
-        <a href="kesif.html" class="discovery-btn">>> GİZLİ SİBER KAYNAKLARA ERİŞ <<</a>
+    <canvas id="canvas"></canvas>
+
+    <div id="intel-panel">
+        <div style="font-weight: bold; text-align: center; border-bottom: 1px solid #0f0; margin-bottom: 5px;">[ 📡 CANLI TERMİNAL ]</div>
+        <div id="target-list">Hedef aranıyor...</div>
     </div>
-            
-</script>
-<div id="intel-screen" style="position: fixed; bottom: 20px; left: 20px; background: rgba(0, 20, 0, 0.9); border: 2px solid #0f0; padding: 12px; color: #0f0; font-family: monospace; font-size: 11px; z-index: 10000; border-radius: 5px; box-shadow: 0 0 15px #0f0;">
-    <div style="border-bottom: 1px solid #0f0; margin-bottom: 5px; font-weight: bold; text-align: center;">[ CANLI HEDEF ANALİZİ ]</div>
-    <div id="user-ip" style="color: #0f0;">IP: Sorgulanıyor...</div>
-    <div id="user-device">CIHAZ: Tespit Edildi</div>
-    <div id="user-os">SISTEM: Analiz Edildi</div>
-</div>
 
-<script>
-// GERÇEK IP ÇEKME OPERASYONU
-fetch('https://api.ipify.org?format=json')
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('user-ip').innerText = "HEDEF IP: " + data.ip;
-    })
-    .catch(() => {
-        document.getElementById('user-ip').innerText = "IP: Şifrelendi (Gizli)";
-    });
+    <div class="container">
+        <h1>[ ŞİFRELEME PORTALI ]</h1>
+        <div class="box">
+            <input type="text" id="msg" placeholder="Mesajı yaz reisim...">
+            <button onclick="sifrele()">SİSTEME GÖNDER VE ŞİFRELE</button>
+            <div id="result" style="margin-top:20px; color: #fff; font-weight: bold;"></div>
+        </div>
+    </div>
 
-document.getElementById('user-device').innerText = "CIHAZ: " + navigator.platform;
-document.getElementById('user-os').innerText = "SISTEM: " + (navigator.userAgent.includes("Android") ? "Android / Mobil" : "Windows / PC");
-</script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
+    <script>
+        // 1. FIREBASE BAĞLANTISI (Senin Görüntündeki Bilgiler)
+        const firebaseConfig = {
+            apiKey: "AIzaSyD8diaMwCxj4FQ-BYbBsRIUE8IPkUkPXJU",
+            authDomain: "karargah-b38ec.firebaseapp.com",
+            projectId: "karargah-b38ec",
+            storageBucket: "karargah-b38ec.appspot.com",
+            messagingSenderId: "362707587052",
+            appId: "1:362707587052:web:ab663461dce3b4eedf7ac9"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-    </body>
+        // 2. MATRIX ARKA PLAN
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+        function draw() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0F0"; ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(draw, 33);
+
+        // 3. CANLI IP TAKİBİ
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => {
+                db.collection("ziyaretciler").doc(data.ip).set({
+                    ip: data.ip,
+                    cihaz: navigator.platform,
+                    zaman: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            });
+
+        // LİSTEYİ GÜNCELLE
+        db.collection("ziyaretciler").orderBy("zaman", "desc").limit(5)
+            .onSnapshot((snapshot) => {
+                const list = document.getElementById('target-list');
+                list.innerHTML = "";
+                snapshot.forEach((doc) => {
+                    const user = doc.data();
+                    list.innerHTML += `<div class="target-item"><span class="blink">●</span> HEDEF: ${user.ip}<br>CİHAZ: ${user.cihaz}</div>`;
+                });
+            });
+
+        function sifrele() {
+            const m = document.getElementById('msg').value;
+            if(m) document.getElementById('result').innerText = "ŞİFRELENDİ: " + btoa(unescape(encodeURIComponent(m)));
+        }
+    </script>
+</body>
 </html>
