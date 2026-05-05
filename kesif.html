@@ -2,21 +2,58 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>EMEĞİ GEÇENLER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GİZLİ SİBER KAYNAKLAR</title>
     <style>
-        body { background: #050505; color: #00ff00; font-family: monospace; padding: 30px; line-height: 1.6; }
-        .terminal-box { border: 1px solid #333; padding: 20px; background: #000; box-shadow: 0 0 20px rgba(0,255,0,0.1); border-radius: 10px; }
-        h2 { border-bottom: 2px solid #00ff00; padding-bottom: 10px; color: #fff; }
-        .cmd { color: #ffff00; font-weight: bold; display: block; margin-top: 10px;}
-        .desc { color: #888; margin-bottom: 15px; display: block; }
-        .back-btn { display: inline-block; margin-top: 30px; color: #00ff00; text-decoration: none; border: 1px solid #00ff00; padding: 5px 15px; }
-        .back-btn:hover { background: #00ff00; color: #000; }
+        body { background-color: black; color: #00ff00; font-family: 'Courier New', monospace; margin: 0; padding: 20px; overflow-x: hidden; }
+        .terminal-header { border-bottom: 2px solid #00ff00; padding-bottom: 10px; margin-bottom: 20px; font-weight: bold; }
+        .log-entry { margin-bottom: 10px; line-height: 1.4; animation: fadeIn 0.5s ease-in; }
+        .warning { color: red; font-weight: bold; animation: blink 0.8s infinite; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.1;} 100% {opacity: 1;} }
+        .access-denied { text-align: center; margin-top: 50px; font-size: 1.5rem; border: 3px solid red; padding: 20px; background: rgba(50, 0, 0, 0.9); }
     </style>
 </head>
 <body>
-    <div class="terminal-box"
-        <p style="color: #ff0000;">⚠️ EMEĞİ GEÇENLER: SFY CYPHER and SYF XANAX</p>
-        <a href="index.html" class="back-btn"><- Portala Dön</a>
+
+    <div class="terminal-header">
+        [ TERMINAL: KESİF MODÜLÜ V2.4 ] - OTURUM AÇILDI: SFY KARARGAH
     </div>
+
+    <div id="logs">
+        <div class="log-entry">> Veritabanı bağlantısı kuruluyor... [BAŞARILI]</div>
+        <div class="log-entry">> Hedef ağ taraması başlatıldı... %100</div>
+        <div class="log-entry">> Şifreli paketler çözülüyor...</div>
+        <div class="log-entry warning">!!! KRİTİK UYARI: YABANCI IP TESPİT EDİLDİ !!!</div>
+        <div class="log-entry">> Sistem kendini korumaya alıyor...</div>
+    </div>
+
+    <div class="access-denied">
+        ❌ ERİŞİM REDDEDİLDİ ❌<br>
+        <span style="font-size: 14px;">Bu kaynağa erişmek için 'Üst Düzey Yönetici' yetkisi gereklidir.</span>
+    </div>
+
+    <script>
+        // Sayfa açıldığında otomatik sahte loglar ekleyelim reisim
+        const logs = [
+            "> Proxy zinciri temizleniyor...",
+            "> İzler siliniyor...",
+            "> Ana merkeze rapor gönderildi."
+        ];
+        let i = 0;
+        const container = document.getElementById('logs');
+        
+        const interval = setInterval(() => {
+            if(i < logs.length) {
+                const div = document.createElement('div');
+                div.className = 'log-entry';
+                div.innerText = logs[i];
+                container.appendChild(div);
+                i++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 1500);
+    </script>
 </body>
 </html>
