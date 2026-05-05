@@ -79,39 +79,49 @@
     <button onclick="mesajiGonder()" style="background: #0f0; color: black; border: none; padding: 10px; cursor: pointer; font-weight: bold;">GÖNDER VE ZAMANLA</button>
     <div id="msg-display" style="margin-top: 20px; font-size: 1.5em; color: #0f0;"></div>
 </div>
+        
+</script>
+<div id="intel-screen" style="position: fixed; bottom: 20px; left: 20px; background: rgba(0, 0, 0, 0.85); border: 1px solid #00ff00; padding: 12px; color: #00ff00; font-family: 'Courier New', monospace; font-size: 11px; z-index: 9999; border-radius: 5px; box-shadow: 0 0 10px #00ff00;">
+    <div style="border-bottom: 1px solid #00ff00; margin-bottom: 5px; font-weight: bold; text-align: center;">[ HEDEF ANALİZİ ]</div>
+    <div id="user-ip">IP: Taranıyor...</div>
+    <div id="user-device">CIHAZ: Tespit Ediliyor...</div>
+    <div id="user-os">SISTEM: Analiz Ediliyor...</div>
+</div>
+
+<div id="shredder-area" style="margin-top: 30px; border: 1px solid #ff0000; padding: 15px; background: rgba(20, 0, 0, 0.6); border-radius: 8px;">
+    <h3 style="color: #ff0000; margin-top: 0; font-size: 14px;">☢️ SELF-DESTRUCT PROTOKOLÜ</h3>
+    <input type="text" id="secret-msg" placeholder="İmha edilecek mesaj..." style="background: #111; color: #ff0000; border: 1px solid #ff0000; padding: 10px; width: 80%; margin-bottom: 10px; font-family: monospace;">
+    <button onclick="mesajiGonder()" style="background: #ff0000; color: white; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; width: 85%;">GÖNDER VE İMHA ET</button>
+    <div id="msg-display" style="margin-top: 15px; min-height: 40px; color: #0f0; font-family: monospace;"></div>
+</div>
 
 <script>
-// 1. İSTİHBARAT EKRANI (İkinci İstediğin)
+// İSTİHBARAT FONKSİYONU
 function bilgileriGetir() {
     document.getElementById('user-device').innerText = "CIHAZ: " + navigator.platform;
     document.getElementById('user-os').innerText = "SISTEM: " + (navigator.userAgent.includes("Android") ? "Android / Mobil" : "Windows / PC");
-    
-    // IP simülasyonu (Gerçek IP için dış servis lazım ama bu şov için yeterli)
-    let randomIP = Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 255) + ".1.42";
+    let randomIP = Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 255) + ".1." + Math.floor(Math.random() * 100);
     document.getElementById('user-ip').innerText = "HEDEF IP: " + randomIP;
 }
 bilgileriGetir();
 
-// 2. SELF-DESTRUCT (Üçüncü İstediğin)
+// İMHA FONKSİYONU
 function mesajiGonder() {
     let msg = document.getElementById('secret-msg').value;
     let display = document.getElementById('msg-display');
-    
     if(msg === "") return;
 
-    display.innerHTML = "MESAJ: " + msg + " <br> <span id='timer' style='color:red;'>[ 5 ] saniye içinde imha edilecek!</span>";
+    display.innerHTML = "SİSTEME İŞLENDİ: " + msg + "<br><span id='timer' style='color:red;'>[ 5 ] saniye içinde silinecek!</span>";
     document.getElementById('secret-msg').value = "";
 
     let count = 5;
     let countdown = setInterval(() => {
         count--;
-        document.getElementById('timer').innerText = "[ " + count + " ] saniye içinde imha edilecek!";
-        
+        if(document.getElementById('timer')) document.getElementById('timer').innerText = "[ " + count + " ] saniye içinde silinecek!";
         if(count <= 0) {
             clearInterval(countdown);
-            display.innerHTML = "<span style='color:red; font-weight:bold;'>[ VERİ TAMAMEN İMHA EDİLDİ ]</span>";
-            // A16 Titreşim Şovu
-            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            display.innerHTML = "<span style='color:red; font-weight:bold; letter-spacing:2px;'>[ VERİ TAMAMEN İMHA EDİLDİ ]</span>";
+            if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
         }
     }, 1000);
 }
